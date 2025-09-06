@@ -1,0 +1,42 @@
+services:
+    db:
+        image: mysql:8.0
+        restart: always
+        environment:
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+            MYSQL_DATABASE: ${DB_DATABASE}
+            MYSQL_USER: ${DB_USERNAME}
+            MYSQL_PASSWORD: ${DB_PASSWORD}
+        volumes:
+            - db_data:/var/lib/mysql
+
+    app:
+        build:
+            context: .
+            target: development
+            args:
+                USER_ID: ${USER_ID}
+                GROUP_ID: ${GROUP_ID}
+        restart: always
+        depends_on:
+            - db
+        environment:
+            AUTORUN_ENABLED: ${AUTORUN_ENABLED}
+            # AUTORUN_LARAVEL_MIGRATION_ISOLATION: ${AUTORUN_LARAVEL_MIGRATION_ISOLATION}
+            APP_NAME: ${APP_NAME}
+            APP_ENV: ${APP_ENV}
+            APP_DEBUG: ${APP_DEBUG}
+            DB_CONNECTION: ${DB_CONNECTION}
+            DB_HOST: ${DB_HOST}
+            DB_PORT: ${DB_PORT}
+            DB_DATABASE: ${DB_DATABASE}
+            DB_USERNAME: ${DB_USERNAME}
+            DB_PASSWORD: ${DB_PASSWORD}
+        ports:
+            - "80:8080"
+            - "443:8443"
+        volumes:
+            - ./:/var/www/html
+
+volumes:
+    db_data:
