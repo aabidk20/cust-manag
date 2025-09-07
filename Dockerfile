@@ -23,13 +23,15 @@ RUN install-php-extensions intl
 RUN docker-php-serversideup-set-id www-data $USER_ID:$GROUP_ID \
     && docker-php-serversideup-set-file-permissions --owner $USER_ID:$GROUP_ID --service nginx
 
-# Copy code
-COPY --chown=www-data:www-data . /var/www/html
+# Copy composer files first for caching
+COPY --chown=www-data:www-data composer.json composer.lock /var/www/html/
 
 USER www-data
+# RUN composer install --no-dev --optimize-autoloader --no-interaction
+RUN composer install --optimize-autoloader --no-interaction
 
-RUN composer install --no-dev --optimize-autoloader --no-interaction
-
+# Now copy the rest of the app
+COPY --chown=www-data:www-data . /var/www/html
 # ============================================================
 # Production stage (simpler, no UID/GID remapping)
 # ============================================================
@@ -39,9 +41,19 @@ USER root
 
 RUN install-php-extensions intl
 
-COPY --chown=www-data:www-data . /var/www/html
+# Copy composer files first for caching
+COPY --chown=www-data:www-data composer.json composer.lock /var/www/html/
 
 USER www-data
+# RUN composer install --no-dev --optimize-autoloader --no-interaction
 
-RUN composer install --no-dev --optimize-autoloader --no-interaction
+# Don't run scripts or autoloader generation before copying the app
+RUN composer install --no-dev --no-scripts --no-autoloader --no-interaction
 
+
+# Now copy the rest of the app
+COPY --chown=www-data:www-data . /var/www/html
+
+# Now run scripts and autoloader generation
+RUN composer dump-autoload --optimize && \
+    composer run-script post-autoload-dump

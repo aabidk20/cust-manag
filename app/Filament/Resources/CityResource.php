@@ -3,23 +3,19 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\CityResource\Pages;
-use App\Filament\Resources\CityResource\RelationManagers;
 use App\Models\City;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Infolists\Components\Section;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Filament\Infolists\Components\Section;
-use Filament\Infolists\Infolist;
-use Filament\Infolists\Components\TextEntry;
 
 class CityResource extends Resource
 {
     protected static ?string $model = City::class;
-
 
     protected static ?string $navigationIcon = 'heroicon-o-building-storefront';
 
@@ -86,10 +82,10 @@ class CityResource extends Resource
     {
         return $infolist->schema([
             Section::make('City Info')
-            ->schema([
-                TextEntry::make('state.name')->label('State Name'),
-                TextEntry::make('name')->label('City Name'),
-            ])->columns(2),
+                ->schema([
+                    TextEntry::make('state.name')->label('State Name'),
+                    TextEntry::make('name')->label('City Name'),
+                ])->columns(2),
         ]);
     }
 

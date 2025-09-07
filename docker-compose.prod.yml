@@ -11,27 +11,21 @@ services:
       - db_data:/var/lib/mysql
 
   app:
+    env_file:
+      - .env
+      - .env.production
     build:
       context: .
       target: production # <- production stage
     restart: always
     depends_on:
       - db
-    environment:
-      APP_NAME: ${APP_NAME}
-      APP_ENV: ${APP_ENV}
-      APP_DEBUG: ${APP_DEBUG}
-      DB_CONNECTION: ${DB_CONNECTION}
-      DB_HOST: ${DB_HOST}
-      DB_PORT: ${DB_PORT}
-      DB_DATABASE: ${DB_DATABASE}
-      DB_USERNAME: ${DB_USERNAME}
-      DB_PASSWORD: ${DB_PASSWORD}
-      AUTORUN_ENABLED: true
     ports:
-      - "80:8080"
-      - "443:8443"
-    # <- no volume mount for app code
+      - '80:8080'
+      - '443:8443'
+    # volumes:
+    #   - storage_data:/var/www/html/storage
 
 volumes:
   db_data:
+  # storage_data:

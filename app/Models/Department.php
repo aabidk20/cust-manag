@@ -8,14 +8,15 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Department extends Model
 {
-
     use HasFactory;
+
     protected $fillable = ['name'];
 
-    //a department has many employees
-    public function employees():HasMany
+    /**
+     * @return HasMany<Employee,Department>
+     */
+    public function employees(): HasMany
     {
         return $this->hasMany(Employee::class);
     }
-
 }

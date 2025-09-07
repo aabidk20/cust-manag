@@ -56,6 +56,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Application Asset URL
+    |--------------------------------------------------------------------------
+    |
+    | This URL is used by the asset helper function to generate URLs to
+    | your assets. You may set this to a CDN or other asset hosting
+    | location if you prefer to serve your assets from a different URL.
+    |
+*/
+    'asset_url' => env('ASSET_URL', null),
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Timezone
     |--------------------------------------------------------------------------
     |
