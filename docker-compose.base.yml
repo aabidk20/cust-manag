@@ -11,24 +11,9 @@ services:
       - db_data:/var/lib/mysql
 
   app:
-    environment:
-      APP_ENV: development
-    env_file:
-      - .env
-    build:
-      context: .
-      target: development
-      args:
-        USER_ID: ${USER_ID}
-        GROUP_ID: ${GROUP_ID}
     restart: always
     depends_on:
       - db
-    ports:
-      - '80:8080'
-      - '443:8443'
-    volumes:
-      - ./:/var/www/html
 
 volumes:
   db_data:
