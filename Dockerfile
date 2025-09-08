@@ -27,7 +27,6 @@ RUN docker-php-serversideup-set-id www-data $USER_ID:$GROUP_ID \
 COPY --chown=www-data:www-data composer.json composer.lock /var/www/html/
 
 USER www-data
-# RUN composer install --no-dev --optimize-autoloader --no-interaction
 RUN composer install --optimize-autoloader --no-interaction
 
 # Now copy the rest of the app
@@ -45,7 +44,6 @@ RUN install-php-extensions intl
 COPY --chown=www-data:www-data composer.json composer.lock /var/www/html/
 
 USER www-data
-# RUN composer install --no-dev --optimize-autoloader --no-interaction
 
 # Don't run scripts or autoloader generation before copying the app
 RUN composer install --no-dev --no-scripts --no-autoloader --no-interaction
