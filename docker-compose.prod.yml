@@ -1,17 +1,12 @@
+# Building the production image locally
 services:
   app:
     build:
       context: .
       target: production
     env_file:
-      - .env
+      - .env.base
       - .env.production
     ports:
       - '80:8080'
       - '443:8443'
-#TODO: storage handling in production
-#     volumes:
-#       - storage_data:/var/www/html/storage
-#
-# volumes:
-#   storage_data:
